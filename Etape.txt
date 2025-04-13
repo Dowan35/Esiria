@@ -62,7 +62,6 @@ withNearVector({ vector: embedding, certainty: 0.75 })
 
 
 /*PS C:\Users\nolan\Documents\Cours\ESIR2\Fablab\Test_N>  docker run -d --name weaviate -e QUERY_DEFAULTS_LIMIT=20 -e AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED="true" -p 8080:8080 semitechnologies/weaviate:latest
-c647579ce708686c9766adfd976f7b68eb59415b047d2f9a6e4898a4f9062d58
 PS C:\Users\nolan\Documents\Cours\ESIR2\Fablab\Test_N> docker ps
 CONTAINER ID   IMAGE                              COMMAND                  CREATED          STATUS          PORTS                    NAMES
 c647579ce708   semitechnologies/weaviate:latest   "/bin/weaviate --hos…"   33 minutes ago   Up 33 minutes   0.0.0.0:8080->8080/tcp   weaviate      
