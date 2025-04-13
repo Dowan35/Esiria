@@ -1,0 +1,12 @@
+  {
+    "class": "Commande",
+    "description": "Commande domotique intelligente",
+    "properties": [
+      { "name": "question", "dataType": ["text"] },
+      { "name": "appareil", "dataType": ["text"] },
+      { "name": "commande", "dataType": ["text"] }
+    ],
+    "vectorIndexConfig": {
+      "distance": "cosine"
+    }
+  }

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Esiria - Assistant Domotique</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+
+    <!-- Section principale -->
+    <main>
+        <section class="hero">
+            <h1>Bienvenue sur Esiria</h1>
+            <p>L’assistant domotique intelligent pour simplifier votre quotidien.</p>
+        </section>
+
+        <!-- Zone de commande utilisateur -->
+        <section class="command-section">
+            <h2>Envoyez une commande</h2>
+            <form id="command-form">
+                <input type="text" id="user-input" placeholder="Tapez une commande ici..." required>
+                <button type="submit">Envoyer</button>
+            </form>
+            <div id="response-container"></div>
+        </section>
+    </main>
+
+    <!-- Pied de page -->
+    <footer>
+        <p>&copy; 2024 Esiria - Tous droits réservés</p>
+    </footer>
+
+    <!-- Script pour gestion des commandes -->
+    <script>
+        var raspberrypiAdress = '10.42.0.1'; // a modifier selon l'adresse du point d'acces wlan1 du raspberry
+        document.getElementById("command-form").addEventListener("submit", async function(event) {
+            event.preventDefault();
+
+            const userInput = document.getElementById("user-input").value;
+
+            // Afficher la question de l'utilisateur
+            //document.getElementById("response-container").innerHTML += `<p><strong>Vous :</strong> ${userInput}</p>`;
+            document.getElementById("response-container").insertAdjacentHTML('afterbegin', `<p><strong>Vous :</strong> ${userInput}</p>`); // Ajoute la question en haut
+
+            // Envoyer la question au serveur
+            try {
+                const response = await fetch(`http://${raspberrypiAdress}:8081/ask`, {
+                //const response = await fetch('http://localhost:8081/ask', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ question: userInput }),
+                });
+
+                const data = await response.json();
+
+                // Afficher la réponse d'Esiria
+                //document.getElementById("response-container").innerHTML += `<p><strong>Esiria :</strong> ${data.answer}</p>`;
+                document.getElementById("response-container").insertAdjacentHTML('afterbegin', `<p><strong>Esiria :</strong> ${data.answer}</p>`);
+            } catch (error) {
+                //document.getElementById("response-container").innerHTML += `<p><strong>Esiria :</strong> Désolé, il y a eu une erreur : ${error}.</p>`;
+                document.getElementById("response-container").insertAdjacentHTML('afterbegin', `<p><strong>Esiria :</strong> Désolé, il y a eu une erreur : ${error}.</p>`);
+            }
+
+            // Réinitialiser le champ d'entrée
+            document.getElementById("user-input").value = "";
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,89 @@
+
+-----------------------------------------------------------------
+-----------------------------------------------------------------
+- Ceci ne se fait qu'une fois, ou à chaque fois que ta base de connaissance (base-connaissance.json) change.
+
+node -e "import('./index.js').then(m => m.storeEmbeddings())"
+
+- Lancer waviate automatiquement au demarrage
+sudo docker run -d --name weaviate \
+  -e QUERY_DEFAULTS_LIMIT=20 \
+  -e AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED="true" \
+  -p 8080:8080 \
+  --restart unless-stopped \
+  semitechnologies/weaviate:latest
+  
+
+( old: docker run -d --name weaviate -e QUERY_DEFAULTS_LIMIT=20 -e AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED="true" -p 8080:8080 semitechnologies/weaviate:latest
+docker start weaviate
+
+
+- Vérifier si il fonctionne 
+sudo docker ps (Une ligne de base apparait puis une nouvelle en dessous si waviate à bien été lancé) 
+
+Pour lancer le device_manager.js au demarrage : 
+sudo apt update
+sudo apt install nodejs npm -y
+sudo npm install -g pm2
+
+pm2 start devices_manager.js
+pm2 save
+pm2 startup
+-----------------------------------------------------------------
+-----------------------------------------------------------------
+
+- Lancer le serveur puis aller sur la page et tester
+node server.js
+
+http://localhost:8081/home.html
+ou
+http://10.42.0.1:8081
+
+-----------------------------------------------------------------
+-----------------------------------------------------------------
+erreurs courrantes
+
+si on recois Désolé, il y a eu une erreur : TypeError: Failed to fetch
+verifier l'adresse ip du raspberrypi dans ./public/home.html dans le fetch()
+
+si on detecte mal les commandes utilisateur, ajuster dans weaviate/weaviate-client le certainty :
+withNearVector({ vector: embedding, certainty: 0.75 })
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*PS C:\Users\nolan\Documents\Cours\ESIR2\Fablab\Test_N>  docker run -d --name weaviate -e QUERY_DEFAULTS_LIMIT=20 -e AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED="true" -p 8080:8080 semitechnologies/weaviate:latest
+c647579ce708686c9766adfd976f7b68eb59415b047d2f9a6e4898a4f9062d58
+PS C:\Users\nolan\Documents\Cours\ESIR2\Fablab\Test_N> docker ps
+CONTAINER ID   IMAGE                              COMMAND                  CREATED          STATUS          PORTS                    NAMES
+c647579ce708   semitechnologies/weaviate:latest   "/bin/weaviate --hos…"   33 minutes ago   Up 33 minutes   0.0.0.0:8080->8080/tcp   weaviate      
+PS C:\Users\nolan\Documents\Cours\ESIR2\Fablab\Test_N> curl http://localhost:8080/v1/.well-known/ready
+StatusCode        : 200
+StatusDescription : OK
+Content           : {}
+RawContent        : HTTP/1.1 200 OK
+                    Content-Length: 0
+                    Date: Sat, 05 Apr 2025 19:17:26 GMT
+
+
+Headers           : {[Content-Length, 0], [Date, Sat, 05 Apr 2025 19:17:26 GMT]}
+RawContentLength  : 0
+
+
+
+docker stop weaviate
+*/
+
+
+
+
+

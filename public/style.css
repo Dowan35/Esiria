@@ -1,0 +1,94 @@
+/* Styles de base */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #111;
+    color: #eee;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Style de la section principale */
+.hero {
+    text-align: center;
+    padding: 50px 20px;
+}
+
+.hero h1 {
+    color: #ff0000; /* Rouge */
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+}
+
+.hero p {
+    color: #eee;
+    font-size: 1.2rem;
+}
+
+/* Zone de commande utilisateur */
+.command-section {
+    margin: 20px auto;
+    width: 90%;
+    max-width: 500px;
+    text-align: center;
+}
+
+.command-section h2 {
+    color: #ff0000;
+    font-size: 1.8rem;
+    margin-bottom: 15px;
+}
+
+#command-form {
+    display: flex;
+    gap: 10px;
+}
+
+#user-input {
+    flex: 1;
+    padding: 10px;
+    font-size: 1rem;
+    border: 2px solid #ff0000;
+    border-radius: 4px;
+    color: #111;
+}
+
+button[type="submit"] {
+    background-color: #ff0000;
+    color: #eee;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 15px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s;
+}
+
+button[type="submit"]:hover {
+    background-color: #cc0000; /* Rouge plus foncé */
+}
+
+/* Réponses de l'utilisateur et d'Esiria */
+#response-container {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #222;
+    border-radius: 4px;
+    color: #ffffff;
+    font-size: 0.9rem;
+    text-align: left;
+    max-height: 300px;
+    overflow-y: auto; /* Active le défilement vertical */
+}
+
+/* Pied de page */
+footer {
+    text-align: center;
+    padding: 20px;
+    background-color: #111;
+    color: #666;
+    font-size: 0.9rem;
+    margin-top: auto;
+}
