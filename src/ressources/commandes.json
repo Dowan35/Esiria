@@ -1,0 +1,93 @@
+[
+  {
+    "appareil": "lumiere_salon",
+    "type_appareil": "lumiere",
+    "interactions": [
+      {
+        "question": "allume la lumière",
+        "commande": {
+          "action": "etat",
+          "etat": "ON",
+          "reponse": "La lumière a été allumée."
+        }
+      },
+      {
+        "question": "active la lampe",
+        "commande": {
+          "action": "etat",
+          "etat": "ON",
+          "reponse": "La lumière a été allumée."
+        }
+      },
+      {
+        "question": "éteinds la lumière",
+        "commande": {
+          "action": "etat",
+          "etat": "OFF",
+          "reponse": "La lumière a été éteinte."
+        }
+      },
+      {
+        "question": "eteinds la lampe",
+        "commande": {
+          "action": "etat",
+          "etat": "OFF",
+          "reponse": "La lumière a bien été éteinte."
+        }
+      },
+      {
+        "question": "la lumière est-elle allumée ?",
+        "commande": {
+          "action": "etat_recherche",
+          "reponse": "Etat de la lumière : "
+        }
+      },
+      {
+        "question": "quelle est la luminosité de la lumière ?",
+        "commande": {
+          "action": "lire_luminosite",
+          "reponse": "Luminosité de la lumière : "
+        }
+      }
+    ]
+  },
+  {
+    "appareil": "capteur_temperature_salon",
+    "type_appareil": "capteur_temperature",
+    "interactions": [
+      {
+        "question": "quelle est la température ?",
+        "commande": {
+          "action": "lire_temperature",
+          "reponse": "Voici la température : "
+        }
+      }
+    ]
+  },
+  {
+    "appareil": "capteur_humidite_salon",
+    "type_appareil": "capteur_humidite",
+    "interactions": [
+      {
+        "question": "quelle est l'humidité?",
+        "commande": {
+          "action": "lire_humidite",
+          "reponse": "Voici l'humidité: "
+        }
+      }
+    ]
+  },
+  {
+    "appareil": "capteur_mouvement_salon",
+    "type_appareil": "capteur_mouvement",
+    "interactions": [
+      {
+        "question": "y a-t-il du mouvement?",
+        "commande": {
+          "action": "lire_mouvement",
+          "reponse": "Vérification de mouvement: "
+        }
+      }
+    ]
+  }
+]
