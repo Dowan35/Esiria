@@ -1,7 +1,17 @@
 import axios from 'axios';
-import huggingKey from '../ressources/hugging_key.json' assert { type: "json" };
+//import huggingKey from '../ressources/hugging_key.json' assert { type: "json" };
 
-const apiKey = huggingKey.HUGGING_FACE_API_KEY;
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
+import dotenv from 'dotenv';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+// Charge .env depuis la racine du projet
+dotenv.config({ path: join(__dirname, '../../.env') });
+
+const apiKey = process.env.HUGGINGFACE_API_KEY //huggingKey.HUGGING_FACE_API_KEY;
 
 async function getEmbeddings(passages) {
   try {
