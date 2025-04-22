@@ -1,7 +1,8 @@
-*.env
+# .gitignore
+.env
 package.json
 package-lock.json
-./src/ressources/hugging_key.json
-./node_modules
-./old_src
-./rtl8812au
+src/ressources/hugging_key.json
+node_modules/
+old_src/
+rtl8812au/
