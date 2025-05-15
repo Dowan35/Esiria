@@ -5,12 +5,11 @@ import sqlite3 from 'sqlite3';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
-import { getEmbeddings } from './embeddings/sentence-transformers.js';
 import { storeEmbeddings, searchCommand, getDatabase } from './weaviate/weaviate-client.js';
 import { buildZigbeeCommand } from './zigbee/zigbeeCommandBuilder.js';
 import { sendMqttCommand } from './mqtt/mqtt-client.js';
 import { getNormalizedCommand } from './openai/commandNormalizer.js'
-import commandes from './ressources/commandes.json' assert { type: "json" };
+import commandes from './ressources/commandes.json' with { type: "json" };
 
 const app = express();
 const __filename = fileURLToPath(import.meta.url);
@@ -24,15 +23,19 @@ const zigbeeMapping = JSON.parse(
 // Chargement de la db
 const db = new sqlite3.Database(path.join(__dirname, './database/devices_database.db'));
 
-app.use(cors({origin: '*',  // Cela permet à toutes les origines d'accéder à l'API
+app.use(cors({
+  origin: '*',// Cela permet à toutes les origines d'accéder à l'API
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
 }));
+
 app.use(express.json());
 app.use(express.static(path.join(__dirname, '../public')));
 
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../public', 'home.html'));
 });
-
+// enregsitre les commandes dans la base de données Weaviate
 await storeEmbeddings(commandes,true);//true pour supprimer les anciennes commandes et les remplacer par les nouvelles
 //console.log("Commandes stockées dans Weaviate: ", await getDatabase());
 
@@ -42,8 +45,8 @@ app.post('/ask', async (req, res) => {
   const { question } = await getNormalizedCommand(req.body, commandes)// normalisation avec l'aide d'openAi
   console.log("Reponse OpenAI :", question);
   try {
-    const [embedding] = await getEmbeddings(question);
-    const doc = await searchCommand(embedding);
+    //const [embedding] = await getEmbeddings(question);
+    const doc = await searchCommand(question);
     if (!doc) return res.json({ answer: "Commande non reconnue." });
 
     console.log("Résultat de la recherche :", doc);

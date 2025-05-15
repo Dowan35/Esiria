@@ -1,6 +1,7 @@
   {
     "class": "Commande",
     "description": "Commande domotique intelligente",
+    "vectorizer": "none", 
     "properties": [
       { "name": "question", "dataType": ["text"] },
       { "name": "appareil", "dataType": ["text"] },

@@ -5,18 +5,31 @@
 
 node -e "import('./index.js').then(m => m.storeEmbeddings())"
 
+Lancer zigbee2mqtt
+
+docker run \
+   --platform linux/arm64 \
+   --name zigbee2mqtt \
+   --restart=unless-stopped \
+   --device=/dev/serial/by-id/usb-Silicon_Labs_Sonoff_Zigbee_3.0_USB_Dongle_Plus_0001-if00-port0:/dev/ttyUSB0 \
+   -p 8080:8080 \
+   -v $(pwd)/data:/app/data \
+   -v /run/udev:/run/udev:ro \
+   -e TZ=Europe/Amsterdam \
+   ghcr.io/koenkk/zigbee2mqtt
+
+
 - Lancer weaviate automatiquement au demarrage
+
 sudo docker run -d --name weaviate \
   -e QUERY_DEFAULTS_LIMIT=20 \
   -e AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED="true" \
-  -p 8080:8080 \
+  -e PERSISTENCE_DATA_PATH="/var/lib/weaviate" \
+  -p 8082:8080 \
   --restart unless-stopped \
   semitechnologies/weaviate:latest
-  
 
-( old: docker run -d --name weaviate -e QUERY_DEFAULTS_LIMIT=20 -e AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED="true" -p 8080:8080 semitechnologies/weaviate:latest
 docker start weaviate
-
 
 - Vérifier si il fonctionne 
 sudo docker ps (Une ligne de base apparait puis une nouvelle en dessous si waviate à bien été lancé) 
@@ -29,6 +42,10 @@ sudo npm install -g pm2
 pm2 start devices_manager.js
 pm2 save
 pm2 startup
+
+Demarrer le serveur en tant que service:
+sudo systemctl start Esiria
+sudo journalctl -u esiria -f
 -----------------------------------------------------------------
 -----------------------------------------------------------------
 
@@ -38,6 +55,35 @@ node server.js
 http://localhost:8081/home.html
 ou
 http://10.42.0.1:8081
+
+- Lancer le serveur auto en tant que service
+sudo nano /etc/systemd/system/esiria.service
+
+[Unit]
+Description=Service Node.js pour server.js
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/node /home/admin/Esiria/src/server.js
+WorkingDirectory=/home/admin/Esiria/src
+Environment=PATH=/usr/bin:/usr/local/bin
+Restart=always
+User=admin
+Group=admin
+StandardOutput=inherit
+StandardError=inherit
+
+[Install]
+WantedBy=multi-user.target
+
+sudo systemctl daemon-reload
+sudo systemctl enable esiria.service
+sudo systemctl start esiria.service
+sudo systemctl status esiria.service
+
+journal : 
+sudo journalctl -u esiria.service -f
+
 
 -----------------------------------------------------------------
 -----------------------------------------------------------------
@@ -56,16 +102,103 @@ sudo ip link set wlan1 down
 sudo ip link set wlan1 up
 
 derniere solution sur le raspberry : sudo reboot
+-----------------------------------------------------------------
+-----------------------------------------------------------------
+changements
+suppression de getEmbeddings et withVector en integrant directement
+la vectorisation des commandes dans weaviate avec text2vec-transformers.
+Plus besoin de l'api hugging face qui beug.
+
+Plus besoin aussi de withNearVector, on passe simplement le texte et Weaviate calcule les similarités.
+
+-----------------------------------------------------------------
+-----------------------------------------------------------------
+dependances
+
+npm install @tensorflow/tfjs-node@3.21.0
+npm install @tensorflow-models/universal-sentence-encoder
 
 
+-----------------------------------------------------------------
+-----------------------------------------------------------------
+condig wlan1 ap
+
+sudo nano /etc/NetworkManager/system-connections/wlan1-hotspot.nmconnection
+
+[connection]
+id=wlan1-hotspot
+uuid=d9b2e0e3-1f2e-4b4e-8e22-d9cfd0733a5b
+type=wifi
+autoconnect=true
+interface-name=wlan1
+#permissions=
+
+[wifi]
+mode=ap
+ssid=Esiria
+
+[wifi-security]
+key-mgmt=wpa-psk
+psk=12345678
+
+[ipv4]
+method=shared
+address1=192.168.50.1/24,192.168.50.1
+dns=8.8.8.8;8.8.4.4;
+
+[ipv6]
+method=ignore
+
+sudo chmod 600 /etc/NetworkManager/system-connections/wlan1-hotspot.nmconnection
+
+sudo nmcli connection modify wlan1-hotspot 802-11-wireless-security.key-mgmt wpa-psk
+sudo nmcli connection modify wlan1-hotspot 802-11-wireless-security.proto rsn
+sudo nmcli connection modify wlan1-hotspot 802-11-wireless-security.group ccmp
+sudo nmcli connection modify wlan1-hotspot 802-11-wireless-security.pairwise ccmp
+sudo nmcli connection modify wlan1-hotspot ipv4.method shared
+sudo nmcli connection up wlan1-hotspot
+
+sudo sh -c "echo 1 > /proc/sys/net/ipv4/ip_forward"
+
+sudo iptables -t nat -A POSTROUTING -o wlan0 -j MASQUERADE
+sudo iptables -A FORWARD -i wlan1 -o wlan0 -j ACCEPT
+sudo iptables -A FORWARD -i wlan0 -o wlan1 -m state --state RELATED,ESTABLISHED -j ACCEPT
+
+sudo netfilter-persistent save
+
+(save dans /stc/iptables/rules.v4 et v6)
+
+sudo reboot ou sudo systemctl restart NetworkManager
+sudo nmcli connection reload
+sudo nmcli connection up wlan1-hotspot
+sudo journalctl -u NetworkManager -f
 
 
+nouvelle conf: 
+
+sudo nmcli connection add type wifi ifname wlan1 con-name wlan1-hotspot autoconnect yes ssid Esiria
+sudo nmcli connection modify wlan1-hotspot 802-11-wireless-security.key-mgmt wpa-psk
+sudo nmcli connection modify wlan1-hotspot 802-11-wireless-security.psk 12345678
+sudo nmcli connection modify wlan1-hotspot ipv4.method shared
+sudo nmcli connection modify wlan1-hotspot ipv4.addresses "192.168.50.1/24"
+sudo nmcli connection modify wlan1-hotspot ipv4.gateway "192.168.50.1"
+sudo nmcli connection modify wlan1-hotspot ipv4.dns "8.8.8.8,8.8.4.4"
+sudo nmcli connection modify wlan1-hotspot ipv6.method ignore
+sudo nmcli connection modify wlan1-hotspot wifi.mode ap
+sudo nmcli connection modify wlan1-hotspot wifi.band bg
+sudo nmcli connection modify wlan1-hotspot 802-11-wireless.channel 6
+
+sudo nmcli connection up wlan1-hotspot
+
+nmcli connection show wlan1-hotspot
+
+nmcli device status
+
+sudo journalctl -u NetworkManager -f
 
 
-
-
-
-
+-----------------------------------------------------------------
+-----------------------------------------------------------------
 
 /*PS C:\Users\nolan\Documents\Cours\ESIR2\Fablab\Test_N>  docker run -d --name weaviate -e QUERY_DEFAULTS_LIMIT=20 -e AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED="true" -p 8080:8080 semitechnologies/weaviate:latest
 PS C:\Users\nolan\Documents\Cours\ESIR2\Fablab\Test_N> docker ps

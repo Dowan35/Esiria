@@ -11,7 +11,6 @@ const __dirname = dirname(__filename);
 // Charge .env depuis la racine du projet
 dotenv.config({ path: join(__dirname, '../../.env') });
 
-
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,  // Utilisation de la clé API depuis .env
 });

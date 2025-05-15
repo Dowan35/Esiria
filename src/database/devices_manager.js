@@ -99,7 +99,7 @@ function fetchBridgeDevices() {
             console.warn("Timeout MQTT bridge/devices");
             client.end();
             resolve([]);
-        }, 3000);
+        }, 8000);
     });
 }
 
@@ -108,10 +108,11 @@ function startLiveUpdates() {
     const client = mqtt.connect(MQTT_BROKER);
 
     client.on("connect", () => {
-        console.log("Connecté au broker MQTT.");
+        
         client.subscribe(MQTT_TOPIC_ALL, err => {
             if (err) console.error("Erreur d'abonnement:", err);
         });
+        console.log("Connecté au broker MQTT.");
     });
 
     client.on("message", (topic, msg) => {

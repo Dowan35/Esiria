@@ -33,7 +33,6 @@
 
     <!-- Script pour gestion des commandes -->
     <script>
-        var raspberrypiAdress = '10.42.0.1'; // a modifier selon l'adresse du point d'acces wlan1 du raspberry
         document.getElementById("command-form").addEventListener("submit", async function(event) {
             event.preventDefault();
 
@@ -45,8 +44,9 @@
 
             // Envoyer la question au serveur
             try {
+                const raspberrypiAdress = 'raspberrypi.local';// a modifier selon l'adresse du point d'acces wlan1 du raspberry 
+
                 const response = await fetch(`http://${raspberrypiAdress}:8081/ask`, {
-                //const response = await fetch('http://localhost:8081/ask', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

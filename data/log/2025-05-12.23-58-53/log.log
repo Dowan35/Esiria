@@ -1,0 +1,17 @@
+[2025-05-12 23:58:53] info: 	z2m: Logging to console, file (filename: log.log)
+[2025-05-12 23:58:53] error: 	z2m: Failed to stop 'OnEvent' (TypeError: Cannot read properties of undefined (reading 'getDevicesIterator')
+    at Zigbee.devicesIterator (/app/lib/zigbee.ts:362:44)
+    at devicesIterator.next (<anonymous>)
+    at OnEvent.stop (/app/lib/extension/onEvent.ts:54:20)
+    at Controller.stop (/app/lib/controller.ts:292:17)
+    at stop (/app/index.js:160:5)
+    at process.handleQuit (/app/index.js:168:13))
+[2025-05-12 23:58:53] error: 	z2m: Not connected to MQTT server!
+[2025-05-12 23:58:53] error: 	z2m: Cannot send message: topic: 'zigbee2mqtt/bridge/state', payload: '{"state":"offline"}
+[2025-05-12 23:58:53] info: 	z2m: Disconnecting from MQTT server
+[2025-05-12 23:58:53] info: 	z2m: Stopping zigbee-herdsman...
+[2025-05-12 23:58:53] error: 	z2m: Failed to stop Zigbee2MQTT (TypeError: Cannot read properties of undefined (reading 'stop')
+    at Zigbee.stop (/app/lib/zigbee.ts:226:29)
+    at Controller.stop (/app/lib/controller.ts:306:31)
+    at stop (/app/index.js:160:5)
+    at process.handleQuit (/app/index.js:168:13))

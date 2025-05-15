@@ -1,0 +1,17 @@
+[2025-05-12 23:57:46] info: 	z2m: Logging to console, file (filename: log.log)
+[2025-05-12 23:57:47] info: 	z2m: Starting Zigbee2MQTT version 2.3.0 (commit #aec59cb774aa09a793ae41cd60e6a5cef15b293c
+)
+[2025-05-12 23:57:47] info: 	z2m: Starting zigbee-herdsman (4.0.0)
+[2025-05-12 23:57:47] info: 	zh:adapter:discovery: Matched adapter: {"path":"/dev/ttyUSB0","manufacturer":"Silicon Labs","serialNumber":"0001","pnpId":"usb-Silicon_Labs_Sonoff_Zigbee_3.0_USB_Dongle_Plus_0001-if00-port0","vendorId":"10c4","productId":"ea60"} => zstack: path=/dev/ttyUSB0, score=4
+[2025-05-12 23:57:47] info: 	zh:zstack:znp: Opening SerialPort with {"path":"/dev/ttyUSB0","baudRate":115200,"rtscts":false,"autoOpen":false}
+[2025-05-12 23:57:47] info: 	zh:zstack:znp: Serialport opened
+[2025-05-12 23:57:47] info: 	z2m: zigbee-herdsman started (resumed)
+[2025-05-12 23:57:47] info: 	z2m: Coordinator firmware version: '{"meta":{"maintrel":1,"majorrel":2,"minorrel":7,"product":1,"revision":20210708,"transportrev":2},"type":"ZStack3x0"}'
+[2025-05-12 23:57:47] info: 	z2m: Currently 0 devices are joined.
+[2025-05-12 23:57:47] info: 	z2m: Connecting to MQTT server at mqtt://localhost:1883
+[2025-05-12 23:57:47] error: 	z2m: MQTT failed to connect, exiting... ()
+[2025-05-12 23:57:47] info: 	z2m: Stopping zigbee-herdsman...
+[2025-05-12 23:57:54] info: 	zh:controller: Wrote coordinator backup to '/app/data/coordinator_backup.json'
+[2025-05-12 23:57:54] info: 	zh:zstack:znp: closing
+[2025-05-12 23:57:54] info: 	zh:zstack:znp: Port closed
+[2025-05-12 23:57:54] info: 	z2m: Stopped zigbee-herdsman
