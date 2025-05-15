@@ -126,8 +126,26 @@ Depuis un autre appareil :
 
 ---
 
-## 8. Remarques
+## 8. Erreurs courrantes et solutions
 
-- Les données de Zigbee2MQTT doivent être présentes dans le dossier `data/`.
-- Le fichier `Etape.txt` contient d’autres notes spécifiques.
+si on recois Désolé, il y a eu une erreur : TypeError: Failed to fetch
+verifier l'adresse ip du raspberrypi dans ./public/home.html dans le fetch()
+
+si on detecte mal les commandes utilisateur, ajuster dans weaviate/weaviate-client le certainty :
+withNearVector({ vector: embedding, certainty: 0.75 })
+
+si le point d'accès Esiria disparait, se co à Free Wifi (wifi de mon telephone), ssh admin@ip_du_raspberry_sur_le_tel
+puis verifier le status de sudo systemctl status hostapd
+solution :  sudo systemctl restart hostapd
+sudo ip link set wlan1 down
+sudo ip link set wlan1 up
+
+derniere solution sur le raspberry : sudo reboot
+
+---
+
+## 9. Remarques
+
+- Les données de Zigbee2MQTT sont présentes dans le dossier `data/` en guise d'exemple.
+- Le fichier `Etape.txt` contient d’autres notes spécifiques potentiellement utiles.
 - Adaptez les chemins si votre utilisateur n’est pas `admin`.
