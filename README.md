@@ -1,6 +1,7 @@
 # Esiria - Déploiement sur Raspberry Pi ou Linux
 
-Ce projet est destiné à être exécuté sur un Raspberry Pi ou une machine Linux classique. Il inclut un backend Node.js, une interface web, l'intégration avec Zigbee2MQTT, Mosquitto et Weaviate (en conteneur Docker), ainsi que la gestion d'un point d'accès Wi-Fi (optionnel sur Raspberry Pi).
+Ce projet consiste à créer un assistant domotique permettant le contrôle des appareils domotique via le protocole Zigbee et MQTT va une commande textuelle.
+Il est destiné à être exécuté sur un Raspberry Pi ou une machine Linux classique. Il inclut un backend Node.js, une interface web, l'intégration avec Zigbee2MQTT, Mosquitto et Weaviate (en conteneur Docker), ainsi que la gestion d'un point d'accès Wi-Fi (optionnel sur Raspberry Pi).
 
 ## Structure du projet
 
